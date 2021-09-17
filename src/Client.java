@@ -1,33 +1,33 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 public class Client implements Runnable {
 
     private Socket socket;
-    private BufferedReader input;
+    private ObjectInputStream ois;
+    private ObjectOutputStream oos;
     // private PrintWriter output;
 
     public Client(Socket s) throws IOException {
         this.socket = s;
-        this.input = new BufferedReader( new InputStreamReader(socket.getInputStream()));
-        // this.output = new PrintWriter(socket.getOutputStream(),true);
+        ois = new ObjectInputStream(socket.getInputStream());
+        oos = new ObjectOutputStream(socket.getOutputStream());
     }
     @Override
     public void run() {
 
         try {
             while(true) {
-                String response = input.readLine();
+                oos.writeObject("REQ");
+                String response = (String)ois.readObject();
                 System.out.println(response);
             }
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         } finally {
             try {
-                input.close();
+                ois.close();
+                oos.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }

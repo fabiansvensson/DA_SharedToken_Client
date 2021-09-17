@@ -24,9 +24,9 @@ public class ClientThread extends Thread {
             //taking the user input
             Scanner scanner = new Scanner(System.in);
 
-            Client clientRun = new Client(socket);
+            //Client clientRun = new Client(socket);
 
-            new Thread(clientRun).start();
+            //new Thread(clientRun).start();
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
